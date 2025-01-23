@@ -8,19 +8,32 @@ class Post:
     """
     A class used to represent post on Nitzagram
     """
-    def __init__(self): #TODO: add parameters
+    def __init__(self, username, location, description, likes_counter, comments): #TODO: add parameters
         #TODO: write me!
-        pass
+        self.username = username
+        self.location = location
+        self.description = description
+        self.likes_counter = likes_counter
+        self.comments = comments
 
-    def display(self):
-        """
-        Display the Post image/Text, description, location, likes and comments
-        on screen
+    def add_like(self):
+        self.likes_counter += 1
 
-        :return: None
-        """
+    def add_comments(self, comment):
+        self.comments.append(comment)
+
+    def display(self, ui_font, post_font):
         # TODO: write me!
-        pass
+        username_text = ui_font.render(f"{self.username}", True, BLACK)
+        location_text = ui_font.render(f"{self.location}", True, BLACK)
+        like_text = ui_font.render(f"{self.likes_counter}", True, BLACK)
+        description_text = ui_font.render(f"{self.description}", True, BLACK)
+
+        screen.blit(username_text, (USER_NAME_X_POS, USER_NAME_Y_POS))
+        screen.blit(location_text, (LOCATION_TEXT_X_POS, LOCATION_TEXT_Y_POS))
+        screen.blit(like_text, (LIKE_TEXT_X_POS, LIKE_TEXT_Y_POS))
+        screen.blit(description_text, (DESCRIPTION_TEXT_X_POS, DESCRIPTION_TEXT_Y_POS))
+
 
 
     def display_comments(self):
@@ -50,4 +63,20 @@ class Post:
                 break
 
 
+class ImagePost(Post):
+    def __init__(self, username, location, description, likes_counter, comments, image):
+        super().__init__(username, location, description, likes_counter, comments)
+        self.image = pygame.image.load(image)
+        self.image = pygame.transform.scale(self.image, (POST_WIDTH, POST_HEIGHT))
 
+    def display(self, ui_font, post_font):
+        screen.blit(self.image, (POST_X_POS, POST_Y_POS))
+        super().display(ui_font, post_font)
+
+
+class TextPost(Post):
+    def __init__(self, username, location, description, likes_counter, comments, text, text_color, background_color):
+        super().__init__(username, location, description, likes_counter, comments)
+        self.text = text
+        self.text_color = text_color
+        self.background_color = background_color

@@ -1,24 +1,7 @@
 import pygame
-from helpers import screen
-from constants import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK
-
-class post:
-    def __init__(self, username, location, description, likes_counter, comments):
-        self.username = username
-        self.location = location
-        self.description = description
-        self.likes_counter = likes_counter
-        self.comments = comments
-
-    def add_like(self):
-        self.likes_counter += 1
-
-    def add_comments(self, comment):
-        self.comments.append(comment)
-
-    def display(self):
-        pass
-
+from helpers import *
+from constants import *
+from classes.Post import *
 
 
 def main():
@@ -33,10 +16,14 @@ def main():
 
     # Set up background image
     background = pygame.image.load('Images/background.png')
-    background = pygame.transform.scale(background,
-                                        (WINDOW_WIDTH, WINDOW_HEIGHT))
+    background = pygame.transform.scale(background,(WINDOW_WIDTH, WINDOW_HEIGHT))
+
+    ui_font = pygame.font.SysFont(None, UI_FONT_SIZE)
+    post_font = pygame.font.SysFont(None, TEXT_POST_FONT_SIZE)
 
     # TODO: add a post here
+    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"])
+    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"], "Images/ronaldo.jpg")
 
     running = True
     while running:
@@ -49,6 +36,8 @@ def main():
         # Display the background, presented Image, likes, comments, tags and location(on the Image)
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
+
+        img_post1.display(ui_font, post_font)
 
         # Update display - without input update everything
         pygame.display.update()
