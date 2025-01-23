@@ -2,8 +2,27 @@ import pygame
 from helpers import screen
 from constants import WINDOW_WIDTH, WINDOW_HEIGHT, BLACK
 
+class post:
+    def __init__(self, username, location, description, likes_counter, comments):
+        self.username = username
+        self.location = location
+        self.description = description
+        self.likes_counter = likes_counter
+        self.comments = comments
+
+    def add_like(self):
+        self.likes_counter += 1
+
+    def add_comments(self, comment):
+        self.comments.append(comment)
+
+    def display(self):
+        pass
+
+
 
 def main():
+
     # Set up the game display, clock and headline
     pygame.init()
 
