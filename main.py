@@ -24,6 +24,7 @@ def main():
     # TODO: add a post here
     post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"])
     img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"], "Images/ronaldo.jpg")
+    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello"], "My post blah blah blah", BLACK, GREY)
 
     running = True
     while running:
@@ -37,7 +38,7 @@ def main():
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
 
-        img_post1.display(ui_font, post_font)
+        text_post.display(ui_font, post_font)
 
         # Update display - without input update everything
         pygame.display.update()

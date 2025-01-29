@@ -1,7 +1,7 @@
 import pygame
 
 from constants import *
-from helpers import screen
+from helpers import *
 
 
 class Post:
@@ -15,6 +15,7 @@ class Post:
         self.description = description
         self.likes_counter = likes_counter
         self.comments = comments
+        self.comments_display_index = 4
 
     def add_like(self):
         self.likes_counter += 1
@@ -73,6 +74,9 @@ class ImagePost(Post):
         screen.blit(self.image, (POST_X_POS, POST_Y_POS))
         super().display(ui_font, post_font)
 
+    def display_comments(self):
+        super().display_comments()
+
 
 class TextPost(Post):
     def __init__(self, username, location, description, likes_counter, comments, text, text_color, background_color):
@@ -80,3 +84,20 @@ class TextPost(Post):
         self.text = text
         self.text_color = text_color
         self.background_color = background_color
+        self.font = pygame.font.SysFont("chalkduster.ttf", TEXT_POST_FONT_SIZE)
+
+    def display(self, ui_font, post_font):
+        post_background = pygame.Rect(POST_X_POS, POST_Y_POS, POST_WIDTH, POST_HEIGHT)
+        pygame.draw.rect(screen, self.background_color, post_background)
+        text_lines = from_text_to_array(self.text)
+        line_number = 0
+
+        for line in text_lines:
+            text = self.font.render(line, True, self.text_color)
+            text_pos = center_text(len(text_lines), text, line_number)
+            screen.blit(text, text_pos)
+            line_number += 1
+        super().display(ui_font, post_font)
+
+    def display_comments(self):
+        super().display_comments()
