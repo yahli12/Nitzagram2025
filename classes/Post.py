@@ -15,7 +15,7 @@ class Post:
         self.description = description
         self.likes_counter = likes_counter
         self.comments = comments
-        self.comments_display_index = 4
+        self.comments_display_index = 0
 
     def add_like(self):
         self.likes_counter += 1
@@ -45,7 +45,6 @@ class Post:
         :return: None
         """
         position_index = self.comments_display_index
-        # If there are more than 4 comments, print "view more comments"
         if len(self.comments) > NUM_OF_COMMENTS_TO_DISPLAY:
             comment_font = pygame.font.SysFont('chalkduster.ttf',
                                                COMMENT_TEXT_SIZE)
@@ -54,7 +53,6 @@ class Post:
             screen.blit(view_more_comments_button, (VIEW_MORE_COMMENTS_X_POS,
                                                     VIEW_MORE_COMMENTS_Y_POS))
 
-        # Display 4 comments starting from comments_display_index
         for i in range(0, len(self.comments)):
             if position_index >= len(self.comments):
                 position_index = 0
@@ -73,6 +71,7 @@ class ImagePost(Post):
     def display(self, ui_font, post_font):
         screen.blit(self.image, (POST_X_POS, POST_Y_POS))
         super().display(ui_font, post_font)
+
 
     def display_comments(self):
         super().display_comments()
@@ -101,3 +100,4 @@ class TextPost(Post):
 
     def display_comments(self):
         super().display_comments()
+
