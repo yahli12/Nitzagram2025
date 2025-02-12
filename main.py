@@ -2,7 +2,6 @@ import pygame
 from helpers import *
 from constants import *
 from classes.Post import *
-from buttons import *
 
 
 def main():
@@ -22,41 +21,25 @@ def main():
     ui_font = pygame.font.SysFont(None, UI_FONT_SIZE)
     post_font = pygame.font.SysFont(None, TEXT_POST_FONT_SIZE)
 
-    current_post = 0
-
     # TODO: add a post here
-    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"])
-    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"], "Images/ronaldo.jpg")
-    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello"], "My post blah blah blah", BLACK, GREY)
-    posts_arr = [img_post1, text_post]
+    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"])
+    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"], "Images/ronaldo.jpg")
+    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool"], "My post blah blah blah", BLACK, GREY)
 
     running = True
     while running:
-        # Grabs events such as key pressed, mouse pressed and so.
-        # Going through all the events that happened in the last clock tick
-
         for event in pygame.event.get():
-            mouse_pos = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if mouse_in_button(click_post_button, mouse_pos):
-                    if current_post == len(posts_arr) - 1:
-                        current_post = 0
-                    else:
-                        current_post += 1
-
             if event.type == pygame.QUIT:
                 running = False
 
-        # Display the background, presented Image, likes, comments, tags and location(on the Image)
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
 
-        posts_arr[current_post].display(ui_font, post_font)
+        img_post1.display(ui_font, post_font)
+        img_post1.display_comments(ui_font)
 
-        # Update display - without input update everything
         pygame.display.update()
 
-        # Set the clock tick to be 60 times per second. 60 frames for second.
         clock.tick(60)
     pygame.quit()
     quit()
