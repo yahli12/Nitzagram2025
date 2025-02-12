@@ -22,28 +22,24 @@ def main():
     post_font = pygame.font.SysFont(None, TEXT_POST_FONT_SIZE)
 
     # TODO: add a post here
-    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"])
-    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "ASDWA"], "Images/ronaldo.jpg")
-    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello"], "My post blah blah blah", BLACK, GREY)
+    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"])
+    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"], "Images/ronaldo.jpg")
+    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool"], "My post blah blah blah", BLACK, GREY)
 
     running = True
     while running:
-        # Grabs events such as key pressed, mouse pressed and so.
-        # Going through all the events that happened in the last clock tick
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        # Display the background, presented Image, likes, comments, tags and location(on the Image)
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
 
-        text_post.display(ui_font, post_font)
+        img_post1.display(ui_font, post_font)
+        img_post1.display_comments(ui_font)
 
-        # Update display - without input update everything
         pygame.display.update()
 
-        # Set the clock tick to be 60 times per second. 60 frames for second.
         clock.tick(60)
     pygame.quit()
     quit()
