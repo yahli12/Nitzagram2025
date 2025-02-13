@@ -23,20 +23,28 @@ def main():
 
     # TODO: add a post here
     post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"])
-    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"], "Images/ronaldo.jpg")
+    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good", "ffdfd", "weswef"], "Images/ronaldo.jpg")
     text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool"], "My post blah blah blah", BLACK, GREY)
-
+    posts_arr = [img_post1, text_post]
     running = True
+    current_post = 0
     while running:
         for event in pygame.event.get():
+            mouse_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_in_button(click_post_button, mouse_pos):
+                    if current_post == len(posts_arr) - 1:
+                        current_post = 0
+                    else:
+                        current_post += 1
             if event.type == pygame.QUIT:
                 running = False
 
         screen.fill(BLACK)
         screen.blit(background, (0, 0))
 
-        img_post1.display(ui_font, post_font)
-        img_post1.display_comments(ui_font)
+        posts_arr[current_post].display(ui_font, post_font)
+        posts_arr[current_post].display_comments(ui_font)
 
         pygame.display.update()
 

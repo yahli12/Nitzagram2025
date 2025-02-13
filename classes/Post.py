@@ -40,16 +40,20 @@ class Post:
         Displays up to NUM_OF_COMMENTS_TO_DISPLAY comments at a time.
         If there are more than NUM_OF_COMMENTS_TO_DISPLAY, a "View More Comments" button is displayed.
         """
-        comment_y_pos = FIRST_COMMENT_Y_POS  # Starting Y position for comments
-        for i, comment in enumerate(self.comments[:NUM_OF_COMMENTS_TO_DISPLAY]):
-            comment_text = ui_font.render(comment, True, BLACK)
-            screen.blit(comment_text, (FIRST_COMMENT_X_POS, comment_y_pos))
-            comment_y_pos += COMMENT_LINE_HEIGHT  # Move to the next line for the next comment
-
-        # Check if there are more comments to display
+        view_more_comments_text = ui_font.render("View more comments", True, GREY)
         if len(self.comments) > NUM_OF_COMMENTS_TO_DISPLAY:
-            view_more_text = ui_font.render("View More Comments", True, BLACK)
-            screen.blit(view_more_text, (FIRST_COMMENT_X_POS, comment_y_pos))
+            screen.blit(view_more_comments_text, (VIEW_MORE_COMMENTS_X_POS, VIEW_MORE_COMMENTS_Y_POS))
+
+        comment_y_pos = FIRST_COMMENT_Y_POS
+        for i in range(min(len(self.comments), NUM_OF_COMMENTS_TO_DISPLAY)):
+            comment_text = ui_font.render(self.comments[i], True, BLACK)
+            screen.blit(comment_text, (FIRST_COMMENT_X_POS, comment_y_pos))
+            comment_y_pos += COMMENT_LINE_HEIGHT
+        for event in pygame.event.get():
+            mouse_pos = pygame.mouse.get_pos()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_in_button(view_more_comments_button, mouse_pos):
+                    draw_comment_text_box()
 
 
 class ImagePost(Post):
