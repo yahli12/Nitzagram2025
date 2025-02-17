@@ -22,10 +22,12 @@ def main():
     post_font = pygame.font.SysFont(None, TEXT_POST_FONT_SIZE)
 
     # TODO: add a post here
-    post = Post("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good"])
-    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool", "good", "ffdfd", "weswef"], "Images/ronaldo.jpg")
-    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, ["ASDWDA", "hello", "nice", "amazing", "cool"], "My post blah blah blah", BLACK, GREY)
+    comments = [Comment("hi"), Comment("cool"), Comment("hi"), Comment("hi"), Comment("hi"), Comment("hi"), Comment("hi"), Comment("hi")]
+    post = Post("yahli", "tel aviv", "sdfsDF", 32, comments)
+    img_post1 = ImagePost("yahli", "tel aviv", "sdfsDF", 32, comments, "Images/ronaldo.jpg")
+    text_post = TextPost("yahli", "tel aviv", "sdfsDF", 32, comments, "My post blah blah blah", BLACK, GREY)
     posts_arr = [img_post1, text_post]
+
     running = True
     current_post = 0
     while running:
@@ -37,6 +39,22 @@ def main():
                         current_post = 0
                     else:
                         current_post += 1
+            # like
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_in_button(like_button, mouse_pos):
+                    posts_arr[current_post].add_like()
+
+            # comment
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_in_button(comment_button, mouse_pos):
+                    comment = read_comment_from_user()
+                    posts_arr[current_post].add_comments(comment)
+
+            # view more comments
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if mouse_in_button(view_more_comments_button, mouse_pos):
+                    draw_comment_text_box()
+
             if event.type == pygame.QUIT:
                 running = False
 
@@ -44,7 +62,7 @@ def main():
         screen.blit(background, (0, 0))
 
         posts_arr[current_post].display(ui_font, post_font)
-        posts_arr[current_post].display_comments(ui_font)
+        posts_arr[current_post].display_comments()
 
         pygame.display.update()
 

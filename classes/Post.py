@@ -1,7 +1,17 @@
 import pygame
-from buttons import *
 from constants import *
 from helpers import *
+from buttons import *
+
+
+class Comment:
+    def __init__(self, text):
+        self.text = text
+
+    def display(self, ui_font, y_pos):
+
+        comment_text = ui_font.render(self.text, True, BLACK)
+        screen.blit(comment_text, (FIRST_COMMENT_X_POS, y_pos))
 
 
 class Post:
@@ -20,8 +30,9 @@ class Post:
     def add_like(self):
         self.likes_counter += 1
 
-    def add_comments(self, comment):
-        self.comments.append(comment)
+    def add_comments(self, text):
+        new_comment = Comment(text)
+        self.comments.append(new_comment)
 
     def display(self, ui_font, post_font):
         # TODO: write me!
@@ -35,25 +46,34 @@ class Post:
         screen.blit(like_text, (LIKE_TEXT_X_POS, LIKE_TEXT_Y_POS))
         screen.blit(description_text, (DESCRIPTION_TEXT_X_POS, DESCRIPTION_TEXT_Y_POS))
 
-    def display_comments(self, ui_font):
+    def display_comments(self):
         """
-        Displays up to NUM_OF_COMMENTS_TO_DISPLAY comments at a time.
-        If there are more than NUM_OF_COMMENTS_TO_DISPLAY, a "View More Comments" button is displayed.
-        """
-        view_more_comments_text = ui_font.render("View more comments", True, GREY)
-        if len(self.comments) > NUM_OF_COMMENTS_TO_DISPLAY:
-            screen.blit(view_more_comments_text, (VIEW_MORE_COMMENTS_X_POS, VIEW_MORE_COMMENTS_Y_POS))
+        Display comments on post. In case there are more than 4
+        comments, show only 4 comments chosen by reset_comments_display_index
 
-        comment_y_pos = FIRST_COMMENT_Y_POS
-        for i in range(min(len(self.comments), NUM_OF_COMMENTS_TO_DISPLAY)):
-            comment_text = ui_font.render(self.comments[i], True, BLACK)
-            screen.blit(comment_text, (FIRST_COMMENT_X_POS, comment_y_pos))
-            comment_y_pos += COMMENT_LINE_HEIGHT
-        for event in pygame.event.get():
-            mouse_pos = pygame.mouse.get_pos()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if mouse_in_button(view_more_comments_button, mouse_pos):
-                    draw_comment_text_box()
+        :return: None
+        """
+        ui_font = pygame.font.SysFont(None, UI_FONT_SIZE)
+        y_pos = FIRST_COMMENT_Y_POS
+        position_index = self.comments_display_index
+        # If there are more than 4 comments, print "view more comments"
+        if len(self.comments) > NUM_OF_COMMENTS_TO_DISPLAY:
+            comment_font = pygame.font.SysFont('chalkduster.ttf',
+                                               COMMENT_TEXT_SIZE)
+            view_more_comments_button = comment_font.render("view more comments",
+                                                            True, LIGHT_GRAY)
+            screen.blit(view_more_comments_button, (VIEW_MORE_COMMENTS_X_POS,
+                                                    VIEW_MORE_COMMENTS_Y_POS))
+
+        # Display 4 comments starting from comments_display_index
+        for i in range(0, len(self.comments)):
+            if position_index >= len(self.comments):
+                position_index = 0
+            self.comments[position_index].display(ui_font,y_pos)
+            position_index += 1
+            y_pos += COMMENT_LINE_HEIGHT
+            if i >= NUM_OF_COMMENTS_TO_DISPLAY - 1:
+                break
 
 
 class ImagePost(Post):
@@ -66,8 +86,8 @@ class ImagePost(Post):
         screen.blit(self.image, (POST_X_POS, POST_Y_POS))
         super().display(ui_font, post_font)
 
-    def display_comments(self, ui_font):
-        super().display_comments(ui_font)
+    def display_comments(self):
+        super().display_comments()
 
 
 class TextPost(Post):
@@ -91,5 +111,5 @@ class TextPost(Post):
             line_number += 1
         super().display(ui_font, post_font)
 
-    def display_comments(self, ui_font):
-        super().display_comments(ui_font)
+    def display_comments(self):
+        super().display_comments()
