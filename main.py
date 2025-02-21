@@ -53,7 +53,7 @@ def main():
             # view more comments
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if mouse_in_button(view_more_comments_button, mouse_pos):
-                    draw_comment_text_box()
+                    posts_arr[current_post].view_more_comments()
 
             if event.type == pygame.QUIT:
                 running = False
